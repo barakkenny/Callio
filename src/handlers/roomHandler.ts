@@ -2,9 +2,12 @@ import { Socket } from "socket.io";
 import {v4 as UUIDv4 } from "uuid"
 import type IRoomParams from "../interface/IRoomParams.js"
 
-const roomHandler = (socket: Socket) => {
 
-    const rooms: Record<string, string[]> = {}
+
+const rooms: Record<string, string[]> = {}
+
+
+const roomHandler = (socket: Socket) => {
 
     const createRoom = () => {
         const roomId = UUIDv4();
@@ -17,11 +20,13 @@ const roomHandler = (socket: Socket) => {
     }
 
     const joinedRoom = ({ roomId, peerId }: IRoomParams)=> {
+        console.log("joined room call", rooms, roomId, peerId)
         if(rooms[roomId]){
             console.log("New user joined room", roomId, 'with peer id as', peerId);
 
             rooms[roomId].push(peerId);
-            socket.join(roomId);
+            console.log("added peer to room called", rooms);
+             socket.join(roomId);
 
             socket.emit("get-user", {
                 roomId,
